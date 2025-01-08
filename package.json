@@ -1,0 +1,23 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "how to give value to customer",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon"
+  },
+  "keywords": [
+    "nothing",
+    "chai",
+    "aur",
+    "code"
+  ],
+  "author": "GauRaV",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
