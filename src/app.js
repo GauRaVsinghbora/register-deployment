@@ -1,4 +1,6 @@
 import express from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
@@ -19,4 +21,6 @@ app.use(express.static("public")); // The 'public' folder must exist for this to
 
 // Middleware to parse cookies from incoming requests
 app.use(cookieParser()); // Cookies are parsed automatically and made available in `req.cookies`.
+
+
 export {app};
