@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema(
     {
-        userName : {
+        userName: {
             type: String,
             required: true,
             unique: true,
@@ -13,28 +13,26 @@ const userSchema = new mongoose.Schema(
         },
         email: {
             type: String,
-            require: true,
+            required: true,
             unique: true,
             lowercase: true,
             trim: true
         },
         fullName:{
             type: String,
-            require: true,
+            required: true,
             lowercase: true,
             trim: true
         },
         password:{
             type: String,
-            require: [true, "password is required"]
+            required: [true, "password is required"]
         }
     },{timestamps: true}
 )
 
-// Middleware to hash the password before saving the user document
-//The middleware (pre("save")) runs automatically during that operation, but you still need to initiate the save process explicitly.
-userSchema.pre("save",async function (next) {
-    if (!this.isModified("password")) {   
+userSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) {  // this will provide the every time harshing.
         // If the password is not modified, skip hashing.
         next();
     }

@@ -1,7 +1,8 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { user, user } from "../models/user.models.js";
+import { user } from "../models/user.models.js";
 import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
+
 
 const registerUser = asyncHandler(async (req, res) => {
     // get the data from the frontend.
@@ -11,10 +12,10 @@ const registerUser = asyncHandler(async (req, res) => {
     // remove password and refresh token field from response.
     // check for user creation.
     // return res.
-
     // step 1.
     const { fullName, email, password, userName } = req.body;
-
+    console.log(req.body);
+    
     // step 2
     if (
         [fullName, email, password, userName].some(
@@ -38,13 +39,13 @@ const registerUser = asyncHandler(async (req, res) => {
     // step 4.
     const User = await user.create({
         fullName,
-        userName: userName.toLowercase(),
         password,
         email,
+        userName: userName.toLowerCase()
     });
 
     // step 5.
-    const createdUser = await user.findById(User._id).select("-password");
+    const createdUser = await user.findById(User?._id).select("-password");
 
     // step 6.
     if (!createdUser) {
