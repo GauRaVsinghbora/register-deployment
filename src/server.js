@@ -16,7 +16,7 @@ connectDB()
     process.exit(1)   //immediately ends the current process.
 })
 
-const url ="https://register-deployment.onrender.com/";
+const url ="https://register-deployment.onrender.com/api/users/";
 const interval = 30000;
 function reloadWebsite(){
     axios
