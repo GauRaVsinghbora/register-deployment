@@ -28,4 +28,4 @@ function reloadWebsite(){
         console.error('error',error.message);
     });
 }
-sertInterval(reloadWebsite,interval);
+setInterval(reloadWebsite,interval);
