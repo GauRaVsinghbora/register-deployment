@@ -3,7 +3,6 @@ import { user } from "../models/user.models.js";
 import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 
-
 const generateAccessAndRefereshToken = async (userId) => {
     try {
         const User = await user.findById(userId);
@@ -34,7 +33,7 @@ const registerUser = asyncHandler(async (req, res) => {
     // step 1.
     const { fullName, email, password, userName } = req.body;
     // console.log(req.body);
-    
+
     // step 2
     if (
         [fullName, email, password, userName].some(
@@ -60,7 +59,7 @@ const registerUser = asyncHandler(async (req, res) => {
         fullName,
         password,
         email,
-        userName: userName.toLowerCase()
+        userName: userName.toLowerCase(),
     });
 
     // step 5.
@@ -77,7 +76,7 @@ const registerUser = asyncHandler(async (req, res) => {
         .json(new apiResponse(200, createdUser, "user is registed."));
 });
 
-const loginUser = asyncHandler(async(req,res)=>{
+const loginUser = asyncHandler(async (req, res) => {
     // take the email/userName and password from the frontend;
     // check the user exists or not;
     // check the password;
@@ -86,12 +85,8 @@ const loginUser = asyncHandler(async(req,res)=>{
     // send response.
 
     // step 1;
-    const {email, userName, password } = req.body;
-    if (
-        [email, password, userName].some(
-            (field) => field?.trim() === "",
-        )
-    ) {
+    const { email, userName, password } = req.body;
+    if ([email, password, userName].some((field) => field?.trim() === "")) {
         throw new apiError(400, "All fields are required");
     }
 
@@ -100,14 +95,14 @@ const loginUser = asyncHandler(async(req,res)=>{
         $or: [{ email }, { userName }],
     });
 
-    if(!User){
-        throw new apiError(400,"user is not exits");
+    if (!User) {
+        throw new apiError(400, "user is not exits");
     }
-    
+
     // step 3;
     const isPasswordValid = await User.isPasswordCorrect(password);
-    if(!isPasswordValid){
-        throw new apiError(401,"password is invalid");
+    if (!isPasswordValid) {
+        throw new apiError(401, "password is invalid");
     }
 
     // step 4;
@@ -137,6 +132,35 @@ const loginUser = asyncHandler(async(req,res)=>{
                 "user logged In successfully",
             ),
         );
-})
+});
 
-export { registerUser, loginUser};
+const logoutUser = asyncHandler(async (req, res) => {
+    // check user.
+    // set refreshtoken undefined,
+    // clear cookies
+
+    // console.log(req.User._id);
+    await user.findByIdAndUpdate(
+        req.User._id,
+        {
+            $set: {
+                refreshToken: undefined,
+            },
+        },
+        {
+            new: true,
+        },
+    );
+
+    const options = {
+        httpOnly: true,
+        secure: true,
+    };
+    return res
+        .status(200)
+        .clearCookie("accessToken", options)
+        .clearCookie("refreshToken", options)
+        .json(new apiResponse(200, {}, "user logged out successfully."));
+});
+
+export { registerUser, loginUser, logoutUser };

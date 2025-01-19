@@ -1,5 +1,6 @@
 import router, {Router} from "express";
-import {registerUser,loginUser} from "../controllers/user.controllers.js"
+import {registerUser,loginUser, logoutUser} from "../controllers/user.controllers.js"
+import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const Route = router();
 
@@ -8,6 +9,6 @@ Route.get("/", (req, res) => {
     res.status(200).json({ message: "Users API is working!" });
 });
 Route.route("/login").post(loginUser);
-
+Route.route("/logout").post(verifyJWT, logoutUser);
 
 export default Route;
