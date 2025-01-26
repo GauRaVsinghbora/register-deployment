@@ -16,7 +16,7 @@ close.addEventListener("click",()=>{
 logouts.forEach((logout) => {
     logout.addEventListener("click", async () => {
         try {
-            const response = await fetch("/api/users/logout", {
+            const response = await fetch("https://register-deployment.onrender.com/api/users/logout", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
