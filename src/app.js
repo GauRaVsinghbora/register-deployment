@@ -2,6 +2,12 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { apiError } from "./utils/apiError.js"; // Import your custom error class
+import path from "path";
+import { fileURLToPath } from "url";
+
+// Get the __dirname equivalent in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -14,12 +20,18 @@ app.use(
 );
 app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "frontend")));
 app.use(cookieParser());
+
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "frontend", "index.html"));
+});
 
 // Routes
 import userRouter from "./routes/user.routes.js";
 app.use("/api/users", userRouter);
+
+
 
 // ✅ Global Error Handling Middleware
 app.use((err, req, res, next) => {
